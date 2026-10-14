@@ -179,19 +179,31 @@ const veteranDocumentTypes = [
   'Medical documentation',
   'Other supporting document'
 ];
+const correctionalDocumentTypes = [
+  'Correctional facility letter',
+  'Incarceration record',
+  'Release or discharge document',
+  'Other supporting document'
+];
 
 function renderDocumentUploadScreen() {
+  const isCorrectionalFacility = state.activeExemption === 6;
+  const documentTypes = isCorrectionalFacility ? correctionalDocumentTypes : veteranDocumentTypes;
+  const documentContext = isCorrectionalFacility ? 'Correctional facility' : 'Veteran with disability';
+  const documentInstructions = isCorrectionalFacility
+    ? "Upload a document that supports the correctional facility exemption. The document should clearly show Christopher Johnson's name and relevant dates."
+    : "Upload a document that verifies the veteran's disability status. The document should clearly show the member's name and relevant disability information.";
   app.innerHTML = `
-    <p class="eyebrow">Veteran with disability</p>
+    <p class="eyebrow">${documentContext}</p>
     <h2 class="screen-title">Upload Supporting Document</h2>
     <div class="upload-info">
       <strong>Supporting documents required</strong>
-      <p>Upload a document that verifies the veteran's disability status. The document should clearly show the member's name and relevant disability information.</p>
+      <p>${documentInstructions}</p>
     </div>
     <label class="field upload-type-field"><span class="field-label">Type of document</span>
       <select id="document-type">
         <option value="">Select document type</option>
-        ${veteranDocumentTypes.map((type) => `<option value="${type}" ${state.documentType === type ? 'selected' : ''}>${type}</option>`).join('')}
+        ${documentTypes.map((type) => `<option value="${type}" ${state.documentType === type ? 'selected' : ''}>${type}</option>`).join('')}
       </select>
     </label>
     <p class="field-label upload-label">How would you like to upload?</p>
@@ -243,11 +255,14 @@ function renderDocumentSuccessScreen() {
   const confirmation = state.uploadFile
     ? `Your ${escapeHtml(state.documentType || 'supporting document')} has been received. You can now continue.`
     : 'Your document type and upload method have been recorded. No file was attached in this demo.';
+  const returnMessage = state.activeExemption === 6
+    ? 'Your correctional facility exemption documents are complete. Return to your account home.'
+    : confirmation;
   app.innerHTML = `
     <section class="upload-success" role="status" aria-live="polite">
       <span class="success-check" aria-hidden="true"></span>
       <h2 class="screen-title">Document submitted</h2>
-      <p>${confirmation}</p>
+      <p>${returnMessage}</p>
     </section>`;
 }
 
@@ -279,7 +294,7 @@ function isSubmitState() {
 
 function getPrimaryActionLabel() {
   if (state.screen === 13) return 'Submit document';
-  if (state.screen === 14) return state.activeExemption === 5 ? 'Back to account home' : 'Continue';
+  if (state.screen === 14) return state.activeExemption === 5 || state.activeExemption === 6 ? 'Back to account home' : 'Continue';
   if (state.submitted || state.screen === 12) return 'Back to account home';
   return isSubmitState() ? 'Submit' : 'Next';
 }
@@ -301,7 +316,7 @@ function next() {
     return;
   }
   if (state.screen === 14) {
-    if (state.activeExemption === 5) {
+    if (state.activeExemption === 5 || state.activeExemption === 6) {
       window.location.href = 'index.html?view=account-home';
       return;
     }
@@ -338,7 +353,7 @@ function next() {
   }
 
   if (state.screen === 10) {
-    state.screen = state.activeExemption === 5 ? 13 : 11;
+    state.screen = state.activeExemption === 5 || state.activeExemption === 6 ? 13 : 11;
     render();
     return;
   }
