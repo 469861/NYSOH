@@ -279,7 +279,7 @@ function isSubmitState() {
 
 function getPrimaryActionLabel() {
   if (state.screen === 13) return 'Submit document';
-  if (state.screen === 14) return 'Continue';
+  if (state.screen === 14) return state.activeExemption === 5 ? 'Back to account home' : 'Continue';
   if (state.submitted || state.screen === 12) return 'Back to account home';
   return isSubmitState() ? 'Submit' : 'Next';
 }
@@ -301,6 +301,10 @@ function next() {
     return;
   }
   if (state.screen === 14) {
+    if (state.activeExemption === 5) {
+      window.location.href = 'index.html?view=account-home';
+      return;
+    }
     state.screen = 11;
     render();
     return;
