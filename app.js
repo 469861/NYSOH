@@ -133,11 +133,13 @@ function renderMonthsScreen() {
     if (event.target.checked && !state.months.includes(event.target.value)) state.months.push(event.target.value);
     if (!event.target.checked) state.months = state.months.filter((month) => month !== event.target.value);
     renderMonthsScreen();
+    primaryButton.textContent = getPrimaryActionLabel();
     if (isScreenComplete()) clearAlert();
   }));
   document.querySelectorAll('[data-remove-month]').forEach((button) => button.addEventListener('click', () => {
     state.months = state.months.filter((month) => month !== button.dataset.removeMonth);
     renderMonthsScreen();
+    primaryButton.textContent = getPrimaryActionLabel();
     if (isScreenComplete()) clearAlert();
   }));
 }
@@ -271,7 +273,8 @@ function isScreenComplete() {
 }
 
 function isSubmitState() {
-  return state.screen === 11 && state.followUp === 'yes';
+  return (state.screen === 10 && state.activeExemption === 2 && state.months.length > 0) ||
+    (state.screen === 11 && state.followUp === 'yes');
 }
 
 function getPrimaryActionLabel() {
@@ -303,6 +306,14 @@ function next() {
     return;
   }
 
+  if (isSubmitState()) {
+    state.submitted = true;
+    app.innerHTML = '<div class="complete-message"><h2 class="screen-title">Exemption submitted</h2><p>Please allow 7–10 days to process.</p></div>';
+    headerBackButton.hidden = true;
+    primaryButton.textContent = 'Back to account home';
+    return;
+  }
+
   if (state.screen < 9) {
     if (state.exemptionAnswers[state.screen] === 'yes') {
       state.activeExemption = state.screen;
@@ -325,14 +336,6 @@ function next() {
   if (state.screen === 10) {
     state.screen = state.activeExemption === 5 ? 13 : 11;
     render();
-    return;
-  }
-
-  if (isSubmitState()) {
-    state.submitted = true;
-    app.innerHTML = '<div class="complete-message"><h2 class="screen-title">Exemption submitted</h2><p>Please allow 7–10 days to process.</p></div>';
-    headerBackButton.hidden = true;
-    primaryButton.textContent = 'Back to account home';
     return;
   }
 
