@@ -399,7 +399,7 @@ primaryButton.addEventListener('click', next);
 headerBackButton.addEventListener('click', back);
 
 function renderAccountHome() {
-  app.innerHTML = '<div class="account-home"><h2 class="screen-title">Account home</h2><p>You are back at your NY State of Health account.</p></div>';
+  app.innerHTML = '<div class="account-home"><h2 class="screen-title">Account home</h2><p>You are back at your NY State of Health account.</p><a class="account-home-link" href="index.html?flow=exemption"><span>Work requirements</span><span class="account-home-arrow" aria-hidden="true">&#8250;</span></a></div>';
   document.querySelector('.app-footer').hidden = true;
   headerBackButton.hidden = true;
 }

@@ -25,7 +25,7 @@ body { margin: 0; min-width: 320px; min-height: 100dvh; background: var(--canvas
 
 button, input, select { font: inherit; }
 
-button:focus-visible, input:focus-visible, select:focus-visible {
+button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible {
   outline: 3px solid var(--focus);
   outline-offset: 3px;
 }
@@ -146,6 +146,9 @@ select { appearance: auto; }
 .complete-message { padding: 20px; border: 1px solid #a8d4bb; color: var(--success); background: #effaf3; }
 .account-home { padding: 8px 0; }
 .account-home p { margin-top: 16px; color: var(--muted); font-size: 16px; line-height: 1.5; }
+.account-home-link { display: flex; align-items: center; justify-content: space-between; gap: 16px; width: 100%; min-height: 56px; margin-top: 24px; padding: 12px 16px; border: 1px solid var(--line); border-radius: var(--radius); color: var(--navy); background: white; font-size: 16px; font-weight: 700; text-decoration: none; }
+.account-home-link:hover { background: var(--blue-soft); }
+.account-home-arrow { font-size: 28px; font-weight: 400; line-height: 1; }
 
 .app-footer { position: static; flex-shrink: 0; display: flex; flex-direction: column; gap: 8px; padding: 12px 20px max(12px, env(safe-area-inset-bottom)); border-top: 1px solid var(--line); background: rgba(255, 255, 255, .98); }
 .form-alert { width: 100%; margin: 0; padding: 12px; border-left: 4px solid #aa010e; color: #6f0008; background: #fcebea; font-size: 14px; font-weight: 700; line-height: 1.4; }
