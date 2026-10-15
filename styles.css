@@ -63,7 +63,7 @@ button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible
 .eyebrow { margin: 0 0 14px; color: var(--blue); font-size: 13px; font-weight: 700; letter-spacing: .04em; }
 h1 { max-width: 620px; margin: 0; color: var(--ink); font-size: clamp(30px, 8vw, 36px); font-weight: 700; letter-spacing: -.02em; line-height: 1.12; }
 .screen-title { max-width: 620px; margin: 0; color: var(--ink); font-size: 20px; font-weight: 700; line-height: 1.2; }
-.intro { max-width: 600px; margin: 16px 0 26px; color: var(--muted); font-size: 17px; line-height: 1.55; }
+.intro { max-width: 600px; margin: 16px 0 26px; color: var(--muted); font-size: 16px; line-height: 1.55; }
 .helper { margin: 8px 0 0; color: var(--muted); font-size: 14px; line-height: 1.5; }
 
 .member-prompt { margin: 0 0 12px; color: var(--ink); font-size: 16px; font-weight: 700; line-height: 1.4; }
