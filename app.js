@@ -43,7 +43,19 @@ function render() {
 const exemptionTypes = [
   { title: 'Caregiver exemption 1', question: 'Was Christopher Johnson a caregiver for a disabled individual from June 2025 to November 2025?' },
   { title: 'Caregiver exemption 2', question: 'Was Christopher Johnson a caregiver for a child under 14 from June 2025 to November 2025?' },
-  { title: 'Medical Exemption', question: 'Do you meet the requirements for a medical exemption?' },
+  {
+    title: 'Medical Exemption',
+    question: 'Has a physician determined that Christopher Johnson has a medical condition that keeps him from his usual activities (for example: working, attending school, volunteering, participating in training, or completing other community engagement)?',
+    description: 'A medical condition may include a physical, mental, or emotional condition; intellectual or developmental disability; or substance use disorder that makes it difficult to perform day-to-day activities, such as:',
+    examples: [
+      'Determined to be blind or disabled',
+      'Diagnosed with a substance use disorder',
+      'Diagnosed with a mental health condition',
+      'Diagnosed with a physical, intellectual, or developmental disability that significantly impairs the ability to perform activities of daily living',
+      'Diagnosed with a substance use disorder and either not in recovery or in recovery for less than 5 years',
+      'Diagnosed with a serious or complex medical condition'
+    ]
+  },
   { title: 'SNAP', question: 'Do you meet the requirements for a SNAP exemption?' },
   { title: 'TANF', question: 'Do you meet the requirements for a TANF exemption?' },
   { title: 'Veteran with disability', question: 'Do you meet the requirements for the veteran with disability exemption?' },
@@ -60,9 +72,10 @@ function renderExemptionTypeScreen(index) {
   app.innerHTML = `
     <p class="eyebrow">Work requirement exemption</p>
     <h2 class="screen-title">${exemption.title}</h2>
-    <p class="intro">Answer each question to help us determine whether you may qualify for an exemption.</p>
+    ${exemption.description ? '' : '<p class="intro">Answer each question to help us determine whether you may qualify for an exemption.</p>'}
     <div class="question-card" role="group" aria-labelledby="exemption-question-${index}">
       <p class="question-text" id="exemption-question-${index}">${question}</p>
+      ${exemption.description ? `<div class="question-support"><p>${exemption.description}</p><ul>${exemption.examples.map((example) => `<li>${example}</li>`).join('')}</ul></div>` : ''}
       <div class="radio-group">
         <label class="radio-option"><input type="radio" name="exemption-answer" value="yes" ${state.exemptionAnswers[index] === 'yes' ? 'checked' : ''}><span>Yes</span></label>
         <label class="radio-option"><input type="radio" name="exemption-answer" value="no" ${state.exemptionAnswers[index] === 'no' ? 'checked' : ''}><span>No</span></label>
