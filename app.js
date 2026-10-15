@@ -39,7 +39,7 @@ function render() {
 }
 
 const exemptionTypes = [
-  { title: 'Caregiver exemption 1', question: 'Was Christopher Johnson a caregiver for a disabled individual?' },
+  { title: 'Caregiver exemption 1', question: 'Was Christopher Johnson a caregiver for a disabled individual from June 2025 to November 2025?' },
   { title: 'Caregiver exemption 2', question: 'Does the person you care for live with you or depend on you for regular support?' },
   { title: 'Medical Exemption', question: 'Do you meet the requirements for a medical exemption?' },
   { title: 'SNAP', question: 'Do you meet the requirements for a SNAP exemption?' },
