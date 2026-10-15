@@ -54,12 +54,15 @@ const exemptionTypes = [
 
 function renderExemptionTypeScreen(index) {
   const exemption = exemptionTypes[index];
+  const question = index === 1 && state.months.length
+    ? `Was Christopher Johnson a caregiver for a child under 14 during ${formatSelectedMonths(state.months)}?`
+    : exemption.question;
   app.innerHTML = `
     <p class="eyebrow">Work requirement exemption</p>
     <h2 class="screen-title">${exemption.title}</h2>
     <p class="intro">Answer each question to help us determine whether you may qualify for an exemption.</p>
     <div class="question-card" role="group" aria-labelledby="exemption-question-${index}">
-      <p class="question-text" id="exemption-question-${index}">${exemption.question}</p>
+      <p class="question-text" id="exemption-question-${index}">${question}</p>
       <div class="radio-group">
         <label class="radio-option"><input type="radio" name="exemption-answer" value="yes" ${state.exemptionAnswers[index] === 'yes' ? 'checked' : ''}><span>Yes</span></label>
         <label class="radio-option"><input type="radio" name="exemption-answer" value="no" ${state.exemptionAnswers[index] === 'no' ? 'checked' : ''}><span>No</span></label>
@@ -70,6 +73,14 @@ function renderExemptionTypeScreen(index) {
     primaryButton.textContent = getPrimaryActionLabel();
     clearAlert();
   }));
+}
+
+function formatSelectedMonths(selectedMonths) {
+  const orderedMonths = eligibleMonths.filter((month) => selectedMonths.includes(month));
+  const labeledMonths = orderedMonths.map((month) => `${month} 2025`);
+  if (labeledMonths.length === 1) return labeledMonths[0];
+  if (labeledMonths.length === 2) return labeledMonths.join(' and ');
+  return `${labeledMonths.slice(0, -1).join(', ')}, and ${labeledMonths.at(-1)}`;
 }
 
 function renderTravelScreen() {
