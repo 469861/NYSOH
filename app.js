@@ -19,9 +19,10 @@ const state = {
 };
 
 const eligibleMonths = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+const newYorkCounties = ['Albany', 'Allegany', 'Bronx', 'Broome', 'Cattaraugus', 'Cayuga', 'Chautauqua', 'Chemung', 'Chenango', 'Clinton', 'Columbia', 'Cortland', 'Delaware', 'Dutchess', 'Erie', 'Essex', 'Franklin', 'Fulton', 'Genesee', 'Greene', 'Hamilton', 'Herkimer', 'Jefferson', 'Kings', 'Lewis', 'Livingston', 'Madison', 'Monroe', 'Montgomery', 'Nassau', 'New York', 'Niagara', 'Oneida', 'Onondaga', 'Ontario', 'Orange', 'Orleans', 'Oswego', 'Otsego', 'Putnam', 'Queens', 'Rensselaer', 'Richmond', 'Rockland', 'St. Lawrence', 'Saratoga', 'Schenectady', 'Schoharie', 'Schuyler', 'Seneca', 'Steuben', 'Suffolk', 'Sullivan', 'Tioga', 'Tompkins', 'Ulster', 'Warren', 'Washington', 'Wayne', 'Westchester', 'Wyoming', 'Yates'];
 
 function createTrip() {
-  return { condition: '', facility: '', accompanyingDependent: false, withinState: false, fromDate: '', toDate: '' };
+  return { condition: '', facility: '', accompanyingDependent: false, dependentMember: '', dependentName: '', withinState: false, facilityZip: '', facilityCounty: '', fromDate: '', toDate: '' };
 }
 
 function render() {
@@ -123,8 +124,13 @@ function tripTemplate(trip, index) {
     <p class="trip-number">Trip ${index + 1}</p>
     <label class="field"><span class="field-label">What is the name of the medical condition that they traveled for? <span aria-hidden="true">*</span></span><input type="text" data-trip-field="condition" data-index="${index}" value="${escapeHtml(trip.condition)}" placeholder="Enter name of medical condition" autocomplete="off"></label>
     <label class="check-option"><input type="checkbox" data-trip-field="accompanyingDependent" data-index="${index}" ${trip.accompanyingDependent ? 'checked' : ''}><span>Travel was to accompany a dependent</span></label>
+    ${trip.accompanyingDependent ? `<label class="field"><span class="field-label">Which household member is the dependent with the medical condition? <span aria-hidden="true">*</span></span><select data-trip-field="dependentMember" data-index="${index}"><option value="">Select a household member</option><option value="other" ${trip.dependentMember === 'other' ? 'selected' : ''}>Another household member</option></select></label>${trip.dependentMember === 'other' ? `<label class="field"><span class="field-label">Enter the dependent's name <span aria-hidden="true">*</span></span><input type="text" data-trip-field="dependentName" data-index="${index}" value="${escapeHtml(trip.dependentName)}" placeholder="Enter household member's name"></label>` : ''}` : ''}
     <label class="field"><span class="field-label">What is the name of the hospital/treatment facility? <span aria-hidden="true">*</span></span><input type="text" data-trip-field="facility" data-index="${index}" value="${escapeHtml(trip.facility)}" placeholder="Enter name of hospital" autocomplete="organization"></label>
     <label class="check-option"><input type="checkbox" data-trip-field="withinState" data-index="${index}" ${trip.withinState ? 'checked' : ''}><span>Travel was within New York State</span></label>
+    <div class="facility-location">
+      <label class="field"><span class="field-label">What is the hospital/treatment facility ZIP code? <span aria-hidden="true">*</span></span><input type="text" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" data-trip-field="facilityZip" data-index="${index}" value="${escapeHtml(trip.facilityZip)}" placeholder="5-digit ZIP code" autocomplete="postal-code"></label>
+      <label class="field"><span class="field-label">What is the hospital/treatment facility county? <span aria-hidden="true">*</span></span><select data-trip-field="facilityCounty" data-index="${index}"><option value="">Select county</option>${newYorkCounties.map((county) => `<option value="${county}" ${trip.facilityCounty === county ? 'selected' : ''}>${county}</option>`).join('')}</select></label>
+    </div>
     <fieldset class="date-range">
       <legend>When did they travel for care?</legend>
       <p class="helper">Valid dates are from June 2025 to November 2025.</p>
@@ -353,7 +359,12 @@ function updateTrip(event) {
   const index = Number(event.target.dataset.index);
   const { tripField } = event.target.dataset;
   state.trips[index][tripField] = event.target.type === 'checkbox' ? event.target.checked : event.target.value;
+  if (tripField === 'accompanyingDependent' && !event.target.checked) {
+    state.trips[index].dependentMember = '';
+    state.trips[index].dependentName = '';
+  }
   clearAlert();
+  if (tripField === 'accompanyingDependent' || tripField === 'dependentMember') renderTravelScreen();
 }
 
 function removeTrip(event) {
@@ -488,6 +499,9 @@ function isTripComplete(trip) {
   return Boolean(
     trip.condition.trim() &&
     trip.facility.trim() &&
+    /^\d{5}$/.test(trip.facilityZip) &&
+    trip.facilityCounty &&
+    (!trip.accompanyingDependent || (trip.dependentMember === 'other' && trip.dependentName.trim())) &&
     trip.fromDate &&
     trip.toDate &&
     trip.fromDate <= trip.toDate &&

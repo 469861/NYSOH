@@ -89,6 +89,9 @@ select { appearance: auto; }
 .date-range { min-width: 0; margin: 18px 0 0; padding: 0; border: 0; }
 .date-range legend { max-width: 100%; padding: 0; color: var(--ink); font-family: Avenir, "Avenir Next", Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 500; line-height: 1.4; }
 .date-range .helper { margin-top: 4px; }
+.facility-location { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.facility-location .field { margin-top: 12px; }
+.facility-location input, .facility-location select { min-width: 0; padding-inline: 8px; font-size: 14px; }
 .date-fields { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 10px; }
 .date-fields .field { margin-top: 12px; }
 .date-fields input[type="date"] { min-width: 0; padding-inline: 8px; font-size: 14px; }
