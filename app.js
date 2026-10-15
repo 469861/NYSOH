@@ -8,6 +8,7 @@ const state = {
   submitted: false,
   exemptionAnswers: Array(9).fill(''),
   activeExemption: -1,
+  educationAnswer: '',
   trips: [createTrip()],
   months: [],
   followUp: '',
@@ -32,7 +33,8 @@ function render() {
     renderNoExemptionScreen,
     renderDocumentUploadScreen,
     renderDocumentSuccessScreen,
-    renderCaregiverOneFollowUps
+    renderCaregiverOneFollowUps,
+    renderEducationExemptionScreen
   ];
   screens[state.screen]();
   headerBackButton.hidden = state.screen === 0 || state.screen === 12 || state.screen === 14;
@@ -137,7 +139,9 @@ function tripTemplate(trip, index) {
 
 function renderMonthsScreen() {
   const dropdownWasOpen = document.querySelector('#month-dropdown')?.open ?? false;
-  const exemptionTitle = exemptionTypes[state.activeExemption]?.title ?? 'this exemption';
+  const exemptionTitle = state.activeExemption === 16
+    ? 'Education exemption'
+    : exemptionTypes[state.activeExemption]?.title ?? 'this exemption';
   app.innerHTML = `
     <p class="eyebrow">Work requirement exemption</p>
     <h2 class="screen-title">Confirm months impacted</h2>
@@ -174,6 +178,8 @@ function renderFollowUpScreen() {
   const isCaregiverOne = state.activeExemption === 0;
   const question = isCaregiverOne
     ? 'Is the individual being cared for related to this household member?'
+    : state.activeExemption === 16
+      ? 'Were they considered to be at least half-time student by their institution?'
     : 'Did this situation prevent you from meeting work requirements?';
   app.innerHTML = `
     <p class="eyebrow">Work requirement exemption</p>
@@ -230,6 +236,24 @@ function renderNoExemptionScreen() {
     <p class="eyebrow">Work requirement exemption</p>
     <h2 class="screen-title">No exemption selected</h2>
     <p class="intro">No additional exemption types are available in this flow.</p>`;
+}
+
+function renderEducationExemptionScreen() {
+  app.innerHTML = `
+    <p class="eyebrow">Work requirement exemption</p>
+    <h2 class="screen-title">Education exemption</h2>
+    <div class="question-card" role="group" aria-labelledby="education-question">
+      <p class="question-text" id="education-question">Was Christopher Johnson enrolled in school, college, or another educational institution?</p>
+      <div class="radio-group">
+        <label class="radio-option"><input type="radio" name="education-answer" value="yes" ${state.educationAnswer === 'yes' ? 'checked' : ''}><span>Yes</span></label>
+        <label class="radio-option"><input type="radio" name="education-answer" value="no" ${state.educationAnswer === 'no' ? 'checked' : ''}><span>No</span></label>
+      </div>
+    </div>`;
+  document.querySelectorAll('[name="education-answer"]').forEach((radio) => radio.addEventListener('change', (event) => {
+    state.educationAnswer = event.target.value;
+    primaryButton.textContent = getPrimaryActionLabel();
+    clearAlert();
+  }));
 }
 
 const veteranDocumentTypes = [
@@ -344,6 +368,7 @@ function isScreenComplete() {
   if (state.screen === 11) return Boolean(state.followUp);
   if (state.screen === 13) return Boolean(state.documentType && state.uploadMethod);
   if (state.screen === 15) return state.caregiver1FollowUps.related === 'no' || state.caregiver1FollowUps.livesWith === 'no' || Boolean(state.caregiver1FollowUps.related && state.caregiver1FollowUps.livesWith);
+  if (state.screen === 16) return Boolean(state.educationAnswer);
   return state.screen === 12 || state.screen === 14;
 }
 
@@ -387,6 +412,19 @@ function next() {
     return;
   }
 
+  if (state.screen === 16) {
+    if (state.educationAnswer === 'yes') {
+      state.activeExemption = 16;
+      state.months = [];
+      state.followUp = '';
+      state.screen = 10;
+    } else {
+      state.screen = 12;
+    }
+    render();
+    return;
+  }
+
   if (isSubmitState()) {
     state.submitted = true;
     app.innerHTML = '<div class="complete-message"><h2 class="screen-title">Exemption submitted</h2><p>Please allow 7–10 days to process.</p></div>';
@@ -402,7 +440,7 @@ function next() {
       state.followUp = '';
       state.screen = state.activeExemption === 8 ? 9 : 10;
     } else {
-      state.screen = state.screen === 8 ? 12 : state.screen + 1;
+      state.screen = state.screen === 8 ? 16 : state.screen + 1;
     }
     render();
     return;
@@ -427,7 +465,11 @@ function next() {
   }
 
   if (state.screen === 11) {
-    state.screen = state.activeExemption < 8 ? state.activeExemption + 1 : 12;
+    state.screen = state.activeExemption === 8
+      ? 16
+      : state.activeExemption < 8
+        ? state.activeExemption + 1
+        : 12;
     state.followUp = '';
   }
   render();
@@ -437,6 +479,7 @@ function incompleteMessage() {
   if (state.screen === 13) return 'Select a document type and an upload method to continue.';
   if (state.screen === 15) return 'Answer both follow-up questions, or select No to continue to Caregiver exemption 2.';
   if (state.screen < 9 || state.screen === 11) return 'Select Yes or No to continue.';
+  if (state.screen === 16) return 'Select Yes or No to continue.';
   if (state.screen === 9) return 'Complete the required trip information for each trip. Dates must be between June and November 2025, and the end date cannot be before the start date.';
   return 'Select at least one impacted month to continue.';
 }
@@ -479,6 +522,8 @@ function back() {
       state.screen = 13;
     } else if (state.screen === 15) {
       state.screen = 10;
+    } else if (state.screen === 16) {
+      state.screen = 8;
     }
     render();
   }
