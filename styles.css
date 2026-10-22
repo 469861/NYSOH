@@ -81,6 +81,7 @@ h1 { max-width: 620px; margin: 0; color: var(--ink); font-size: clamp(30px, 8vw,
 .field:first-of-type { margin-top: 0; }
 .field-label { display: block; margin-bottom: 7px; font-size: 14px; font-weight: 700; line-height: 1.4; }
 input[type="text"], input[type="date"], select { width: 100%; min-height: 52px; padding: 10px 12px; border: 1px solid #7c8d9a; border-radius: var(--radius); color: var(--ink); background: white; }
+input::placeholder { color: var(--muted); opacity: 1; }
 select { appearance: auto; }
 .check-option { display: flex; align-items: flex-start; gap: 12px; min-height: 48px; margin-top: 12px; padding: 10px 0; color: var(--ink); font-size: 15px; line-height: 1.4; cursor: pointer; }
 .check-option input { flex: 0 0 22px; width: 22px; height: 22px; margin: 0; accent-color: var(--navy); }
