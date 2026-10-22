@@ -88,7 +88,6 @@ function renderExemptionTypeScreen(index) {
     ? `Was Christopher Johnson a caregiver for a child under 14 during ${formatSelectedMonths(state.months)}?`
     : exemption.question;
   app.innerHTML = `
-    <p class="eyebrow">Work requirement exemption</p>
     <h2 class="screen-title">${exemption.title}</h2>
     ${exemption.description ? '' : '<p class="intro">Answer each question to help us determine whether you may qualify for an exemption.</p>'}
     <div class="question-card" role="group" aria-labelledby="exemption-question-${index}">
@@ -116,7 +115,6 @@ function formatSelectedMonths(selectedMonths) {
 
 function renderTravelScreen() {
   app.innerHTML = `
-    <p class="eyebrow">Work requirement exemption</p>
     <h2 class="screen-title">Travel for medical care</h2>
     <p class="intro">You can request a short-term hardship exemption for a household member if they have traveled out of their community for medical care for themselves or a dependent for 2 or more nights. We may require more information after your application.</p>
     <p class="member-prompt">Please enter the following information for Christopher Johnson</p>
@@ -164,7 +162,6 @@ function renderMonthsScreen() {
     ? 'Education exemption'
     : exemptionTypes[state.activeExemption]?.title ?? 'this exemption';
   app.innerHTML = `
-    <p class="eyebrow">Work requirement exemption</p>
     <h2 class="screen-title">Confirm months impacted</h2>
     <p class="intro">Select the months when ${exemptionTitle} affected your ability to meet work requirements.</p>
     <section class="question-card" aria-labelledby="months-heading">
@@ -203,7 +200,6 @@ function renderFollowUpScreen() {
       ? 'Were they considered to be at least half-time student by their institution?'
     : 'Did this situation prevent you from meeting work requirements?';
   app.innerHTML = `
-    <p class="eyebrow">Work requirement exemption</p>
     <h2 class="screen-title">Follow-up question</h2>
     <div class="question-card" role="group" aria-labelledby="follow-up-question">
       <p class="question-text" id="follow-up-question">${question}</p>
@@ -222,7 +218,6 @@ function renderFollowUpScreen() {
 function renderCaregiverOneFollowUps() {
   const allYes = state.caregiver1FollowUps.related === 'yes' && state.caregiver1FollowUps.livesWith === 'yes';
   app.innerHTML = `
-    <p class="eyebrow">Caregiver exemption 1</p>
     <h2 class="screen-title">Tell us about Christopher Johnson's time as a caregiver for a disabled individual</h2>
     <p class="helper">Months selected: ${state.months.map(escapeHtml).join(', ')}</p>
     <div class="question-card" role="group" aria-labelledby="caregiver1-related-question">
@@ -254,14 +249,12 @@ function renderCaregiverOneFollowUps() {
 
 function renderNoExemptionScreen() {
   app.innerHTML = `
-    <p class="eyebrow">Work requirement exemption</p>
     <h2 class="screen-title">No exemption selected</h2>
     <p class="intro">No additional exemption types are available in this flow.</p>`;
 }
 
 function renderEducationExemptionScreen() {
   app.innerHTML = `
-    <p class="eyebrow">Work requirement exemption</p>
     <h2 class="screen-title">Education exemption</h2>
     <div class="question-card" role="group" aria-labelledby="education-question">
       <p class="question-text" id="education-question">Was Christopher Johnson enrolled in school, college, or another educational institution?</p>
@@ -293,12 +286,10 @@ const correctionalDocumentTypes = [
 function renderDocumentUploadScreen() {
   const isCorrectionalFacility = state.activeExemption === 6;
   const documentTypes = isCorrectionalFacility ? correctionalDocumentTypes : veteranDocumentTypes;
-  const documentContext = isCorrectionalFacility ? 'Correctional facility' : 'Veteran with disability';
   const documentInstructions = isCorrectionalFacility
     ? "Upload a document that supports the correctional facility exemption. The document should clearly show Christopher Johnson's name and relevant dates."
     : "Upload a document that verifies the veteran's disability status. The document should clearly show the member's name and relevant disability information.";
   app.innerHTML = `
-    <p class="eyebrow">${documentContext}</p>
     <h2 class="screen-title">Upload Supporting Document</h2>
     <div class="upload-info">
       <strong>Supporting documents required</strong>
