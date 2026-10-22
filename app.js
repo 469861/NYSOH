@@ -80,9 +80,11 @@ function renderExemptionTypeScreen(index) {
     <div class="question-card" role="group" aria-labelledby="exemption-question-${index}">
       <p class="question-text" id="exemption-question-${index}">${question}</p>
       ${exemption.description ? `<div class="question-support"><p>${exemption.description}</p><ul>${exemption.examples.map((example) => `<li>${example}</li>`).join('')}</ul></div>` : ''}
-      <div class="radio-group">
-        <label class="radio-option"><input type="radio" name="exemption-answer" value="yes" ${state.exemptionAnswers[index] === 'yes' ? 'checked' : ''}><span>Yes</span></label>
-        <label class="radio-option"><input type="radio" name="exemption-answer" value="no" ${state.exemptionAnswers[index] === 'no' ? 'checked' : ''}><span>No</span></label>
+      <div class="radio-response" data-response-name="exemption-answer">
+        <div class="radio-group">
+          <label class="radio-option"><input type="radio" name="exemption-answer" value="yes" ${state.exemptionAnswers[index] === 'yes' ? 'checked' : ''}><span>Yes</span></label>
+          <label class="radio-option"><input type="radio" name="exemption-answer" value="no" ${state.exemptionAnswers[index] === 'no' ? 'checked' : ''}><span>No</span></label>
+        </div>
       </div>
     </div>`;
   document.querySelectorAll('[name="exemption-answer"]').forEach((radio) => radio.addEventListener('change', (event) => {
@@ -190,9 +192,11 @@ function renderFollowUpScreen() {
     <h2 class="screen-title">Follow-up question</h2>
     <div class="question-card" role="group" aria-labelledby="follow-up-question">
       <p class="question-text" id="follow-up-question">${question}</p>
-      <div class="radio-group">
-        <label class="radio-option"><input type="radio" name="follow-up" value="yes" ${state.followUp === 'yes' ? 'checked' : ''}><span>Yes</span></label>
-        <label class="radio-option"><input type="radio" name="follow-up" value="no" ${state.followUp === 'no' ? 'checked' : ''}><span>No</span></label>
+      <div class="radio-response" data-response-name="follow-up">
+        <div class="radio-group">
+          <label class="radio-option"><input type="radio" name="follow-up" value="yes" ${state.followUp === 'yes' ? 'checked' : ''}><span>Yes</span></label>
+          <label class="radio-option"><input type="radio" name="follow-up" value="no" ${state.followUp === 'no' ? 'checked' : ''}><span>No</span></label>
+        </div>
       </div>
     </div>`;
   document.querySelectorAll('[name="follow-up"]').forEach((radio) => radio.addEventListener('change', (event) => {
@@ -209,16 +213,20 @@ function renderCaregiverOneFollowUps() {
     <p class="helper">Months selected: ${state.months.map(escapeHtml).join(', ')}</p>
     <div class="question-card" role="group" aria-labelledby="caregiver1-related-question">
       <p class="question-text" id="caregiver1-related-question">Is the individual being cared for related to Christopher Johnson?</p>
-      <div class="radio-group">
-        <label class="radio-option"><input type="radio" name="caregiver1-related" value="yes" ${state.caregiver1FollowUps.related === 'yes' ? 'checked' : ''}><span>Yes</span></label>
-        <label class="radio-option"><input type="radio" name="caregiver1-related" value="no" ${state.caregiver1FollowUps.related === 'no' ? 'checked' : ''}><span>No</span></label>
+      <div class="radio-response" data-response-name="caregiver1-related">
+        <div class="radio-group">
+          <label class="radio-option"><input type="radio" name="caregiver1-related" value="yes" ${state.caregiver1FollowUps.related === 'yes' ? 'checked' : ''}><span>Yes</span></label>
+          <label class="radio-option"><input type="radio" name="caregiver1-related" value="no" ${state.caregiver1FollowUps.related === 'no' ? 'checked' : ''}><span>No</span></label>
+        </div>
       </div>
     </div>
     <div class="question-card" role="group" aria-labelledby="caregiver1-lives-question">
       <p class="question-text" id="caregiver1-lives-question">Does the individual being cared for live with Christopher Johnson?</p>
-      <div class="radio-group">
-        <label class="radio-option"><input type="radio" name="caregiver1-lives-with" value="yes" ${state.caregiver1FollowUps.livesWith === 'yes' ? 'checked' : ''}><span>Yes</span></label>
-        <label class="radio-option"><input type="radio" name="caregiver1-lives-with" value="no" ${state.caregiver1FollowUps.livesWith === 'no' ? 'checked' : ''}><span>No</span></label>
+      <div class="radio-response" data-response-name="caregiver1-lives-with">
+        <div class="radio-group">
+          <label class="radio-option"><input type="radio" name="caregiver1-lives-with" value="yes" ${state.caregiver1FollowUps.livesWith === 'yes' ? 'checked' : ''}><span>Yes</span></label>
+          <label class="radio-option"><input type="radio" name="caregiver1-lives-with" value="no" ${state.caregiver1FollowUps.livesWith === 'no' ? 'checked' : ''}><span>No</span></label>
+        </div>
       </div>
     </div>`;
 
@@ -240,16 +248,20 @@ function renderCaregiverTwoFollowUps() {
     <p class="helper">Months selected: ${state.months.map(escapeHtml).join(', ')}</p>
     <div class="question-card" role="group" aria-labelledby="caregiver2-related-question">
       <p class="question-text" id="caregiver2-related-question">Is the individual being cared for related to Christopher Johnson?</p>
-      <div class="radio-group">
-        <label class="radio-option"><input type="radio" name="caregiver2-related" value="yes" ${state.caregiver2FollowUps.related === 'yes' ? 'checked' : ''}><span>Yes</span></label>
-        <label class="radio-option"><input type="radio" name="caregiver2-related" value="no" ${state.caregiver2FollowUps.related === 'no' ? 'checked' : ''}><span>No</span></label>
+      <div class="radio-response" data-response-name="caregiver2-related">
+        <div class="radio-group">
+          <label class="radio-option"><input type="radio" name="caregiver2-related" value="yes" ${state.caregiver2FollowUps.related === 'yes' ? 'checked' : ''}><span>Yes</span></label>
+          <label class="radio-option"><input type="radio" name="caregiver2-related" value="no" ${state.caregiver2FollowUps.related === 'no' ? 'checked' : ''}><span>No</span></label>
+        </div>
       </div>
     </div>
     <div class="question-card" role="group" aria-labelledby="caregiver2-lives-question">
       <p class="question-text" id="caregiver2-lives-question">Does the individual being cared for live with Christopher Johnson?</p>
-      <div class="radio-group">
-        <label class="radio-option"><input type="radio" name="caregiver2-lives-with" value="yes" ${state.caregiver2FollowUps.livesWith === 'yes' ? 'checked' : ''}><span>Yes</span></label>
-        <label class="radio-option"><input type="radio" name="caregiver2-lives-with" value="no" ${state.caregiver2FollowUps.livesWith === 'no' ? 'checked' : ''}><span>No</span></label>
+      <div class="radio-response" data-response-name="caregiver2-lives-with">
+        <div class="radio-group">
+          <label class="radio-option"><input type="radio" name="caregiver2-lives-with" value="yes" ${state.caregiver2FollowUps.livesWith === 'yes' ? 'checked' : ''}><span>Yes</span></label>
+          <label class="radio-option"><input type="radio" name="caregiver2-lives-with" value="no" ${state.caregiver2FollowUps.livesWith === 'no' ? 'checked' : ''}><span>No</span></label>
+        </div>
       </div>
     </div>`;
 
@@ -276,9 +288,11 @@ function renderEducationExemptionScreen() {
     <h2 class="screen-title">Education exemption</h2>
     <div class="question-card" role="group" aria-labelledby="education-question">
       <p class="question-text" id="education-question">Was Christopher Johnson enrolled in school, college, or another educational institution?</p>
-      <div class="radio-group">
-        <label class="radio-option"><input type="radio" name="education-answer" value="yes" ${state.educationAnswer === 'yes' ? 'checked' : ''}><span>Yes</span></label>
-        <label class="radio-option"><input type="radio" name="education-answer" value="no" ${state.educationAnswer === 'no' ? 'checked' : ''}><span>No</span></label>
+      <div class="radio-response" data-response-name="education-answer">
+        <div class="radio-group">
+          <label class="radio-option"><input type="radio" name="education-answer" value="yes" ${state.educationAnswer === 'yes' ? 'checked' : ''}><span>Yes</span></label>
+          <label class="radio-option"><input type="radio" name="education-answer" value="no" ${state.educationAnswer === 'no' ? 'checked' : ''}><span>No</span></label>
+        </div>
       </div>
     </div>`;
   document.querySelectorAll('[name="education-answer"]').forEach((radio) => radio.addEventListener('change', (event) => {
@@ -551,16 +565,40 @@ function showAlert(message) {
   alert.setAttribute('aria-live', 'assertive');
   alert.textContent = message;
 
+  let responseName = null;
+  if (state.screen < 9) responseName = 'exemption-answer';
+  else if (state.screen === 11) responseName = 'follow-up';
+  else if (state.screen === 16) responseName = 'education-answer';
+  else if (state.screen === 15) {
+    responseName = state.caregiver1FollowUps.related ? 'caregiver1-lives-with' : 'caregiver1-related';
+  } else if (state.screen === 17) {
+    responseName = state.caregiver2FollowUps.related ? 'caregiver2-lives-with' : 'caregiver2-related';
+  }
+
+  const responseGroup = responseName
+    ? app.querySelector(`[data-response-name="${responseName}"]`)
+    : null;
+  if (responseGroup) {
+    responseGroup.classList.add('has-error');
+    responseGroup.querySelector('.radio-group').insertAdjacentElement('afterend', alert);
+    return;
+  }
+
   let target = app.querySelector('.question-card');
   if (state.screen === 9) target = app.querySelector('#trip-list');
-  if (state.screen === 13) target = app.querySelector('.upload-info');
+  else if (state.screen === 10) target = app.querySelector('#months-heading');
+  else if (state.screen === 13) target = app.querySelector('.upload-info');
 
-  if (target) target.insertBefore(alert, target.firstChild);
+  if (target && state.screen === 10) target.insertAdjacentElement('afterend', alert);
+  else if (target) target.insertBefore(alert, target.firstChild);
   else app.prepend(alert);
 }
 
 function clearAlert() {
-  app.querySelectorAll('.form-alert').forEach((alert) => alert.remove());
+  app.querySelectorAll('.form-alert').forEach((alert) => {
+    alert.closest('.radio-response')?.classList.remove('has-error');
+    alert.remove();
+  });
 }
 
 function back() {
