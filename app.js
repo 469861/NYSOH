@@ -384,7 +384,7 @@ function isScreenComplete() {
   if (state.screen === 10) return state.months.length > 0;
   if (state.screen === 11) return Boolean(state.followUp);
   if (state.screen === 13) return Boolean(state.documentType && state.uploadMethod);
-  if (state.screen === 15) return state.caregiver1FollowUps.related === 'no' || state.caregiver1FollowUps.livesWith === 'no' || Boolean(state.caregiver1FollowUps.related && state.caregiver1FollowUps.livesWith);
+  if (state.screen === 15) return state.caregiver1FollowUps.related === 'yes' || state.caregiver1FollowUps.livesWith === 'yes' || (state.caregiver1FollowUps.related === 'no' && state.caregiver1FollowUps.livesWith === 'no');
   if (state.screen === 16) return Boolean(state.educationAnswer);
   return state.screen === 12 || state.screen === 14;
 }
@@ -392,7 +392,7 @@ function isScreenComplete() {
 function isSubmitState() {
   return (state.screen === 10 && state.activeExemption === 2 && state.months.length > 0) ||
     (state.screen === 11 && state.followUp === 'yes') ||
-    (state.screen === 15 && state.caregiver1FollowUps.related === 'yes' && state.caregiver1FollowUps.livesWith === 'yes');
+    (state.screen === 15 && (state.caregiver1FollowUps.related === 'yes' || state.caregiver1FollowUps.livesWith === 'yes'));
 }
 
 function getPrimaryActionLabel() {
