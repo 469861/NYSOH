@@ -157,7 +157,7 @@ select { appearance: auto; }
 .account-home-arrow { font-size: 28px; font-weight: 400; line-height: 1; }
 
 .app-footer { position: static; flex-shrink: 0; display: flex; flex-direction: column; gap: 8px; padding: 12px 20px max(12px, env(safe-area-inset-bottom)); border-top: 1px solid var(--line); background: rgba(255, 255, 255, .98); }
-.form-alert { width: 100%; margin: 0; padding: 12px; border-left: 4px solid #aa010e; color: #6f0008; background: #fcebea; font-size: 14px; font-weight: 700; line-height: 1.4; }
+.form-alert { width: 100%; margin: 0 0 14px; padding: 12px; border-left: 4px solid #aa010e; border-radius: 2px; color: #6f0008; background: #fcebea; font-size: 14px; font-weight: 700; line-height: 1.4; }
 .back-button, .primary-button { width: 100%; min-height: 52px; padding: 11px 20px; border-radius: var(--radius); font-weight: 700; cursor: pointer; }
 .back-button { border: 1px solid var(--navy); color: var(--navy); background: white; }
 .primary-button { min-width: 132px; border: 1px solid var(--navy-dark); color: white; background: var(--navy-dark); }

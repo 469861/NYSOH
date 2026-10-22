@@ -2,7 +2,6 @@ const app = document.querySelector('#app');
 const primaryButton = document.querySelector('#primary-button');
 const headerBackButton = document.querySelector('#header-back');
 const headerCloseButton = document.querySelector('#header-close');
-const formAlert = document.querySelector('#form-alert');
 
 const state = {
   screen: 0,
@@ -545,13 +544,23 @@ function isTripComplete(trip) {
 }
 
 function showAlert(message) {
-  formAlert.textContent = message;
-  formAlert.hidden = false;
+  clearAlert();
+  const alert = document.createElement('p');
+  alert.className = 'form-alert';
+  alert.setAttribute('role', 'alert');
+  alert.setAttribute('aria-live', 'assertive');
+  alert.textContent = message;
+
+  let target = app.querySelector('.question-card');
+  if (state.screen === 9) target = app.querySelector('#trip-list');
+  if (state.screen === 13) target = app.querySelector('.upload-info');
+
+  if (target) target.insertBefore(alert, target.firstChild);
+  else app.prepend(alert);
 }
 
 function clearAlert() {
-  formAlert.textContent = '';
-  formAlert.hidden = true;
+  app.querySelectorAll('.form-alert').forEach((alert) => alert.remove());
 }
 
 function back() {
