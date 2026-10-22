@@ -55,7 +55,6 @@ button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible
 .nav-button, .close-button { display: grid; place-items: center; width: 44px; height: 44px; border: 0; color: var(--navy); background: transparent; cursor: pointer; }
 .nav-button { display: flex; grid-column: 1; justify-self: start; gap: 2px; width: auto; min-width: 44px; max-width: 100%; padding: 0; font-size: 15px; text-align: left; }
 .nav-chevron { flex: 0 0 auto; font-size: 32px; font-weight: 300; line-height: 1; }
-.nav-back-title { max-width: 118px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .close-button { color: var(--muted); font-size: 28px; line-height: 1; }
 .close-button { grid-column: 3; justify-self: end; }
 
