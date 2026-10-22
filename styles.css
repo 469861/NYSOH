@@ -68,7 +68,7 @@ h1 { max-width: 620px; margin: 0; color: var(--ink); font-size: clamp(30px, 8vw,
 
 .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
 
-.question-card { width: 100%; min-inline-size: 0; margin: 26px 0 0; padding: 18px; border: 1px solid var(--line); border-radius: var(--radius); background: white; box-shadow: 0 1px 3px rgba(26, 26, 26, .14); }
+.question-card { width: 100%; min-inline-size: 0; margin: 26px 0 0; padding: 0; border: 0; border-radius: 0; background: transparent; box-shadow: none; }
 .question-text { display: block; width: 100%; max-width: 100%; margin: 0 0 20px; padding: 0; color: var(--navy-dark); font-family: Avenir, "Avenir Next", Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 500; line-height: 1.4; overflow-wrap: anywhere; }
 .question-card h2 { margin: 0 0 20px; color: var(--navy-dark); font-family: Avenir, "Avenir Next", Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 500; line-height: 1.4; }
 .question-support { margin: -4px 0 20px; color: var(--ink); font-size: 14px; line-height: 1.45; }
