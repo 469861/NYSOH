@@ -58,9 +58,9 @@ button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible
 .close-button { color: var(--muted); font-size: 28px; line-height: 1; }
 .close-button { grid-column: 3; justify-self: end; }
 
-.content { width: 100%; flex: 1; min-height: 0; margin: 0 auto; overflow-y: auto; padding: 28px 20px 36px; background: var(--canvas); overscroll-behavior: contain; }
+.content { width: 100%; flex: 1; min-height: 0; margin: 0 auto; overflow-y: auto; padding: 0 20px 36px; background: var(--canvas); overscroll-behavior: contain; }
 h1 { max-width: 620px; margin: 0; color: var(--ink); font-size: clamp(30px, 8vw, 36px); font-weight: 700; letter-spacing: -.02em; line-height: 1.12; }
-.screen-title { max-width: 620px; margin: 0; padding: 10px 12px; border-radius: var(--radius); color: var(--navy); background: var(--surface); font-size: 20px; font-weight: 700; line-height: 1.2; }
+.screen-title { width: calc(100% + 40px); max-width: none; margin: 0 -20px; padding: 10px 20px; border-bottom: 1px solid var(--line); color: var(--navy); background: var(--surface); font-size: 20px; font-weight: 700; line-height: 1.2; }
 .intro { max-width: 600px; margin: 16px 0 26px; color: var(--muted); font-size: 16px; line-height: 1.55; }
 .helper { margin: 8px 0 0; color: var(--muted); font-size: 14px; line-height: 1.5; }
 
@@ -148,8 +148,8 @@ select { appearance: auto; }
 .month-chip { display: inline-flex; align-items: center; gap: 6px; padding: 4px 6px 4px 10px; border: 1px solid var(--line); border-radius: 99px; color: var(--muted); background: white; font-size: 13px; }
 .month-chip.selected { border-color: var(--blue); color: var(--navy-dark); background: var(--blue-soft); }
 .month-chip button { display: grid; place-items: center; width: 32px; height: 32px; border: 0; border-radius: 50%; color: inherit; background: transparent; font-size: 20px; cursor: pointer; }
-.complete-message { padding: 20px; border: 1px solid #a8d4bb; color: var(--success); background: #effaf3; }
-.account-home { padding: 8px 0; }
+.complete-message { margin: 20px 0; padding: 20px; border: 1px solid #a8d4bb; color: var(--success); background: #effaf3; }
+.account-home { margin-top: 16px; padding: 8px 0; }
 .account-home p { margin-top: 16px; color: var(--muted); font-size: 16px; line-height: 1.5; }
 .account-home-link { display: flex; align-items: center; justify-content: space-between; gap: 16px; width: 100%; min-height: 56px; margin-top: 24px; padding: 12px 16px; border: 1px solid var(--line); border-radius: var(--radius); color: var(--navy); background: white; font-size: 16px; font-weight: 700; text-decoration: none; }
 .account-home-link:hover { background: var(--blue-soft); }

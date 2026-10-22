@@ -373,9 +373,9 @@ function renderDocumentSuccessScreen() {
     ? 'Your correctional facility exemption documents are complete. Return to your account home.'
     : confirmation;
   app.innerHTML = `
+    <h2 class="screen-title">Document submitted</h2>
     <section class="upload-success" role="status" aria-live="polite">
       <span class="success-check" aria-hidden="true"></span>
-      <h2 class="screen-title">Document submitted</h2>
       <p>${returnMessage}</p>
     </section>`;
 }
@@ -465,7 +465,7 @@ function next() {
 
   if (isSubmitState()) {
     state.submitted = true;
-    app.innerHTML = '<div class="complete-message"><h2 class="screen-title">Exemption submitted</h2><p>Please allow 7–10 days to process.</p></div>';
+    app.innerHTML = '<h2 class="screen-title">Exemption submitted</h2><div class="complete-message"><p>Please allow 7–10 days to process.</p></div>';
     headerBackButton.hidden = true;
     primaryButton.textContent = 'Back to account home';
     return;
@@ -590,7 +590,7 @@ headerCloseButton.addEventListener('click', () => {
 });
 
 function renderAccountHome() {
-  app.innerHTML = '<div class="account-home"><h2 class="screen-title">Account home</h2><p>You are back at the Work requirements account.</p><a class="account-home-link" href="index.html?flow=exemption"><span>Work requirements</span><span class="account-home-arrow" aria-hidden="true">&#8250;</span></a></div>';
+  app.innerHTML = '<h2 class="screen-title">Account home</h2><div class="account-home"><p>You are back at the Work requirements account.</p><a class="account-home-link" href="index.html?flow=exemption"><span>Work requirements</span><span class="account-home-arrow" aria-hidden="true">&#8250;</span></a></div>';
   document.querySelector('.app-footer').hidden = true;
   headerBackButton.hidden = true;
   headerCloseButton.hidden = true;
