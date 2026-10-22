@@ -42,19 +42,22 @@ button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible
 
 .app-header {
   min-height: 52px;
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(44px, 1fr) auto minmax(44px, 1fr);
   align-items: center;
-  justify-content: space-between;
   padding: max(8px, env(safe-area-inset-top)) 12px 0;
   color: var(--navy-dark);
   background: var(--surface);
   border-bottom: 1px solid #e0e0e0;
 }
 
-.header-title { max-width: 220px; overflow: hidden; color: var(--ink); font-size: 15px; font-weight: 700; text-align: center; text-overflow: ellipsis; white-space: nowrap; text-decoration: none; }
+.header-title { grid-column: 2; max-width: 220px; overflow: hidden; color: var(--ink); font-size: 15px; font-weight: 700; text-align: center; text-overflow: ellipsis; white-space: nowrap; }
 .nav-button, .close-button { display: grid; place-items: center; width: 44px; height: 44px; border: 0; color: var(--navy); background: transparent; cursor: pointer; }
-.nav-button { font-size: 38px; font-weight: 300; line-height: 1; }
+.nav-button { display: flex; grid-column: 1; justify-self: start; gap: 2px; width: auto; min-width: 44px; max-width: 100%; padding: 0; font-size: 15px; text-align: left; }
+.nav-chevron { flex: 0 0 auto; font-size: 32px; font-weight: 300; line-height: 1; }
+.nav-back-title { max-width: 118px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .close-button { color: var(--muted); font-size: 28px; line-height: 1; }
+.close-button { grid-column: 3; justify-self: end; }
 
 .member-bar { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding: 10px 20px; border-bottom: 1px solid #e0e0e0; color: var(--muted); background: #fafafa; font-size: 13px; }
 .member-bar strong { color: var(--ink); font-size: 14px; }

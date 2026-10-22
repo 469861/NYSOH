@@ -1,6 +1,8 @@
 const app = document.querySelector('#app');
 const primaryButton = document.querySelector('#primary-button');
 const headerBackButton = document.querySelector('#header-back');
+const headerBackTitle = document.querySelector('#header-back-title');
+const headerCloseButton = document.querySelector('#header-close');
 const formAlert = document.querySelector('#form-alert');
 
 const state = {
@@ -39,8 +41,21 @@ function render() {
   ];
   screens[state.screen]();
   headerBackButton.hidden = state.screen === 0 || state.screen === 12 || state.screen === 14;
+  const previousTitle = getPreviousScreenTitle();
+  headerBackTitle.textContent = previousTitle;
+  headerBackButton.setAttribute('aria-label', `Back to ${previousTitle}`);
   primaryButton.textContent = getPrimaryActionLabel();
   clearAlert();
+}
+
+function getPreviousScreenTitle() {
+  if (state.screen > 0 && state.screen < 9) return exemptionTypes[state.screen - 1].title;
+  if (state.screen === 9) return exemptionTypes[8].title;
+  if (state.screen === 10) return state.activeExemption === 8 ? 'Travel for medical care' : exemptionTypes[state.activeExemption]?.title ?? 'Previous screen';
+  if (state.screen === 11) return state.activeExemption === 8 ? 'Travel for medical care' : 'Confirm months impacted';
+  if (state.screen === 13 || state.screen === 15) return 'Confirm months impacted';
+  if (state.screen === 16) return 'Travel for care';
+  return 'Back';
 }
 
 const exemptionTypes = [
@@ -549,11 +564,15 @@ function escapeHtml(value) {
 
 primaryButton.addEventListener('click', next);
 headerBackButton.addEventListener('click', back);
+headerCloseButton.addEventListener('click', () => {
+  window.location.href = 'index.html?view=account-home';
+});
 
 function renderAccountHome() {
-  app.innerHTML = '<div class="account-home"><h2 class="screen-title">Account home</h2><p>You are back at your NY State of Health account.</p><a class="account-home-link" href="index.html?flow=exemption"><span>Work requirements</span><span class="account-home-arrow" aria-hidden="true">&#8250;</span></a></div>';
+  app.innerHTML = '<div class="account-home"><h2 class="screen-title">Account home</h2><p>You are back at the Work requirements account.</p><a class="account-home-link" href="index.html?flow=exemption"><span>Work requirements</span><span class="account-home-arrow" aria-hidden="true">&#8250;</span></a></div>';
   document.querySelector('.app-footer').hidden = true;
   headerBackButton.hidden = true;
+  headerCloseButton.hidden = true;
 }
 
 if (new URLSearchParams(window.location.search).get('view') === 'account-home') {
