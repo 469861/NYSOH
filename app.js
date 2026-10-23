@@ -69,6 +69,27 @@ const exemptionTypes = [
   { title: 'Travel for care', question: 'Did you travel out of your community for medical care for 2 or more nights?' }
 ];
 
+function renderYesNoGroup(name, label, selectedValue) {
+  const safeName = escapeHtml(name);
+  const safeLabel = escapeHtml(label);
+  const safeValue = escapeHtml(selectedValue || '');
+  if (customElements.get('mms-radio-group')) {
+    return `<mms-radio-group data-response-name="${safeName}" name="${safeName}" label="${safeLabel}" value="${safeValue}" color-scheme="primary" orientation="horizontal" size="md" required><mms-radio label="Yes" value="yes"></mms-radio><mms-radio label="No" value="no"></mms-radio></mms-radio-group>`;
+  }
+  return `<div class="radio-response" data-response-name="${safeName}" role="group" aria-label="${safeLabel}"><p class="question-text">${safeLabel}</p><div class="radio-group"><label class="radio-option"><input type="radio" name="${safeName}" value="yes" ${selectedValue === 'yes' ? 'checked' : ''}><span>Yes</span></label><label class="radio-option"><input type="radio" name="${safeName}" value="no" ${selectedValue === 'no' ? 'checked' : ''}><span>No</span></label></div></div>`;
+}
+
+function bindYesNoGroup(name, onChange) {
+  const group = app.querySelector(`[data-response-name="${name}"]`);
+  group?.addEventListener('change', (event) => {
+    const value = event.detail?.value ?? event.target?.value;
+    if (!value) return;
+    onChange(value);
+    primaryButton.textContent = getPrimaryActionLabel();
+    clearAlert();
+  });
+}
+
 function renderExemptionTypeScreen(index) {
   const exemption = exemptionTypes[index];
   const question = index === 1 && state.months.length
@@ -77,21 +98,11 @@ function renderExemptionTypeScreen(index) {
   app.innerHTML = `
     <h2 class="screen-title">${exemption.title}</h2>
     ${exemption.description ? '' : '<p class="intro">Answer each question to help us determine whether you may qualify for an exemption.</p>'}
-    <div class="question-card" role="group" aria-labelledby="exemption-question-${index}">
-      <p class="question-text" id="exemption-question-${index}">${question}</p>
+    <div class="question-card">
       ${exemption.description ? `<div class="question-support"><p>${exemption.description}</p><ul>${exemption.examples.map((example) => `<li>${example}</li>`).join('')}</ul></div>` : ''}
-      <div class="radio-response" data-response-name="exemption-answer">
-        <div class="radio-group">
-          <label class="radio-option"><input type="radio" name="exemption-answer" value="yes" ${state.exemptionAnswers[index] === 'yes' ? 'checked' : ''}><span>Yes</span></label>
-          <label class="radio-option"><input type="radio" name="exemption-answer" value="no" ${state.exemptionAnswers[index] === 'no' ? 'checked' : ''}><span>No</span></label>
-        </div>
-      </div>
+      ${renderYesNoGroup('exemption-answer', question, state.exemptionAnswers[index])}
     </div>`;
-  document.querySelectorAll('[name="exemption-answer"]').forEach((radio) => radio.addEventListener('change', (event) => {
-    state.exemptionAnswers[index] = event.target.value;
-    primaryButton.textContent = getPrimaryActionLabel();
-    clearAlert();
-  }));
+  bindYesNoGroup('exemption-answer', (value) => { state.exemptionAnswers[index] = value; });
 }
 
 function formatSelectedMonths(selectedMonths) {
@@ -190,20 +201,8 @@ function renderFollowUpScreen() {
     : 'Did this situation prevent you from meeting work requirements?';
   app.innerHTML = `
     <h2 class="screen-title">Follow-up question</h2>
-    <div class="question-card" role="group" aria-labelledby="follow-up-question">
-      <p class="question-text" id="follow-up-question">${question}</p>
-      <div class="radio-response" data-response-name="follow-up">
-        <div class="radio-group">
-          <label class="radio-option"><input type="radio" name="follow-up" value="yes" ${state.followUp === 'yes' ? 'checked' : ''}><span>Yes</span></label>
-          <label class="radio-option"><input type="radio" name="follow-up" value="no" ${state.followUp === 'no' ? 'checked' : ''}><span>No</span></label>
-        </div>
-      </div>
-    </div>`;
-  document.querySelectorAll('[name="follow-up"]').forEach((radio) => radio.addEventListener('change', (event) => {
-    state.followUp = event.target.value;
-    primaryButton.textContent = getPrimaryActionLabel();
-    clearAlert();
-  }));
+    <div class="question-card">${renderYesNoGroup('follow-up', question, state.followUp)}</div>`;
+  bindYesNoGroup('follow-up', (value) => { state.followUp = value; });
 }
 
 function renderCaregiverOneFollowUps() {
@@ -211,70 +210,22 @@ function renderCaregiverOneFollowUps() {
   app.innerHTML = `
     <h2 class="screen-title">Tell us about Christopher Johnson's time as a caregiver for a disabled individual</h2>
     <p class="helper">Months selected: ${state.months.map(escapeHtml).join(', ')}</p>
-    <div class="question-card" role="group" aria-labelledby="caregiver1-related-question">
-      <p class="question-text" id="caregiver1-related-question">Is the individual being cared for related to Christopher Johnson?</p>
-      <div class="radio-response" data-response-name="caregiver1-related">
-        <div class="radio-group">
-          <label class="radio-option"><input type="radio" name="caregiver1-related" value="yes" ${state.caregiver1FollowUps.related === 'yes' ? 'checked' : ''}><span>Yes</span></label>
-          <label class="radio-option"><input type="radio" name="caregiver1-related" value="no" ${state.caregiver1FollowUps.related === 'no' ? 'checked' : ''}><span>No</span></label>
-        </div>
-      </div>
-    </div>
-    <div class="question-card" role="group" aria-labelledby="caregiver1-lives-question">
-      <p class="question-text" id="caregiver1-lives-question">Does the individual being cared for live with Christopher Johnson?</p>
-      <div class="radio-response" data-response-name="caregiver1-lives-with">
-        <div class="radio-group">
-          <label class="radio-option"><input type="radio" name="caregiver1-lives-with" value="yes" ${state.caregiver1FollowUps.livesWith === 'yes' ? 'checked' : ''}><span>Yes</span></label>
-          <label class="radio-option"><input type="radio" name="caregiver1-lives-with" value="no" ${state.caregiver1FollowUps.livesWith === 'no' ? 'checked' : ''}><span>No</span></label>
-        </div>
-      </div>
-    </div>`;
+    <div class="question-card">${renderYesNoGroup('caregiver1-related', 'Is the individual being cared for related to Christopher Johnson?', state.caregiver1FollowUps.related)}</div>
+    <div class="question-card">${renderYesNoGroup('caregiver1-lives-with', 'Does the individual being cared for live with Christopher Johnson?', state.caregiver1FollowUps.livesWith)}</div>`;
 
-  document.querySelectorAll('[name="caregiver1-related"]').forEach((radio) => radio.addEventListener('change', (event) => {
-    state.caregiver1FollowUps.related = event.target.value;
-    primaryButton.textContent = getPrimaryActionLabel();
-    clearAlert();
-  }));
-  document.querySelectorAll('[name="caregiver1-lives-with"]').forEach((radio) => radio.addEventListener('change', (event) => {
-    state.caregiver1FollowUps.livesWith = event.target.value;
-    primaryButton.textContent = getPrimaryActionLabel();
-    clearAlert();
-  }));
+  bindYesNoGroup('caregiver1-related', (value) => { state.caregiver1FollowUps.related = value; });
+  bindYesNoGroup('caregiver1-lives-with', (value) => { state.caregiver1FollowUps.livesWith = value; });
 }
 
 function renderCaregiverTwoFollowUps() {
   app.innerHTML = `
     <h2 class="screen-title">Tell us about Christopher Johnson's time as a caregiver for a child under 14</h2>
     <p class="helper">Months selected: ${state.months.map(escapeHtml).join(', ')}</p>
-    <div class="question-card" role="group" aria-labelledby="caregiver2-related-question">
-      <p class="question-text" id="caregiver2-related-question">Is the individual being cared for related to Christopher Johnson?</p>
-      <div class="radio-response" data-response-name="caregiver2-related">
-        <div class="radio-group">
-          <label class="radio-option"><input type="radio" name="caregiver2-related" value="yes" ${state.caregiver2FollowUps.related === 'yes' ? 'checked' : ''}><span>Yes</span></label>
-          <label class="radio-option"><input type="radio" name="caregiver2-related" value="no" ${state.caregiver2FollowUps.related === 'no' ? 'checked' : ''}><span>No</span></label>
-        </div>
-      </div>
-    </div>
-    <div class="question-card" role="group" aria-labelledby="caregiver2-lives-question">
-      <p class="question-text" id="caregiver2-lives-question">Does the individual being cared for live with Christopher Johnson?</p>
-      <div class="radio-response" data-response-name="caregiver2-lives-with">
-        <div class="radio-group">
-          <label class="radio-option"><input type="radio" name="caregiver2-lives-with" value="yes" ${state.caregiver2FollowUps.livesWith === 'yes' ? 'checked' : ''}><span>Yes</span></label>
-          <label class="radio-option"><input type="radio" name="caregiver2-lives-with" value="no" ${state.caregiver2FollowUps.livesWith === 'no' ? 'checked' : ''}><span>No</span></label>
-        </div>
-      </div>
-    </div>`;
+    <div class="question-card">${renderYesNoGroup('caregiver2-related', 'Is the individual being cared for related to Christopher Johnson?', state.caregiver2FollowUps.related)}</div>
+    <div class="question-card">${renderYesNoGroup('caregiver2-lives-with', 'Does the individual being cared for live with Christopher Johnson?', state.caregiver2FollowUps.livesWith)}</div>`;
 
-  document.querySelectorAll('[name="caregiver2-related"]').forEach((radio) => radio.addEventListener('change', (event) => {
-    state.caregiver2FollowUps.related = event.target.value;
-    primaryButton.textContent = getPrimaryActionLabel();
-    clearAlert();
-  }));
-  document.querySelectorAll('[name="caregiver2-lives-with"]').forEach((radio) => radio.addEventListener('change', (event) => {
-    state.caregiver2FollowUps.livesWith = event.target.value;
-    primaryButton.textContent = getPrimaryActionLabel();
-    clearAlert();
-  }));
+  bindYesNoGroup('caregiver2-related', (value) => { state.caregiver2FollowUps.related = value; });
+  bindYesNoGroup('caregiver2-lives-with', (value) => { state.caregiver2FollowUps.livesWith = value; });
 }
 
 function renderNoExemptionScreen() {
@@ -286,20 +237,8 @@ function renderNoExemptionScreen() {
 function renderEducationExemptionScreen() {
   app.innerHTML = `
     <h2 class="screen-title">Education exemption</h2>
-    <div class="question-card" role="group" aria-labelledby="education-question">
-      <p class="question-text" id="education-question">Was Christopher Johnson enrolled in school, college, or another educational institution?</p>
-      <div class="radio-response" data-response-name="education-answer">
-        <div class="radio-group">
-          <label class="radio-option"><input type="radio" name="education-answer" value="yes" ${state.educationAnswer === 'yes' ? 'checked' : ''}><span>Yes</span></label>
-          <label class="radio-option"><input type="radio" name="education-answer" value="no" ${state.educationAnswer === 'no' ? 'checked' : ''}><span>No</span></label>
-        </div>
-      </div>
-    </div>`;
-  document.querySelectorAll('[name="education-answer"]').forEach((radio) => radio.addEventListener('change', (event) => {
-    state.educationAnswer = event.target.value;
-    primaryButton.textContent = getPrimaryActionLabel();
-    clearAlert();
-  }));
+    <div class="question-card">${renderYesNoGroup('education-answer', 'Was Christopher Johnson enrolled in school, college, or another educational institution?', state.educationAnswer)}</div>`;
+  bindYesNoGroup('education-answer', (value) => { state.educationAnswer = value; });
 }
 
 const veteranDocumentTypes = [
@@ -559,11 +498,6 @@ function isTripComplete(trip) {
 
 function showAlert(message) {
   clearAlert();
-  const alert = document.createElement('p');
-  alert.className = 'form-alert';
-  alert.setAttribute('role', 'alert');
-  alert.setAttribute('aria-live', 'assertive');
-  alert.textContent = message;
 
   let responseName = null;
   if (state.screen < 9) responseName = 'exemption-answer';
@@ -579,11 +513,18 @@ function showAlert(message) {
     ? app.querySelector(`[data-response-name="${responseName}"]`)
     : null;
   if (responseGroup) {
+    if (responseGroup.matches('mms-radio-group')) {
+      responseGroup.error = true;
+      responseGroup.errorText = message;
+      return;
+    }
+    const alert = createInlineAlert(message);
     responseGroup.classList.add('has-error');
     responseGroup.querySelector('.radio-group').insertAdjacentElement('afterend', alert);
     return;
   }
 
+  const alert = createInlineAlert(message);
   let target = app.querySelector('.question-card');
   if (state.screen === 9) target = app.querySelector('#trip-list');
   else if (state.screen === 10) target = app.querySelector('#months-heading');
@@ -594,10 +535,32 @@ function showAlert(message) {
   else app.prepend(alert);
 }
 
+function createInlineAlert(message) {
+  if (customElements.get('mms-inline-alert')) {
+    const alert = document.createElement('mms-inline-alert');
+    alert.className = 'inline-validation-alert';
+    alert.alertType = 'error';
+    alert.dismissible = false;
+    alert.message = message;
+    return alert;
+  }
+  const alert = document.createElement('p');
+  alert.className = 'form-alert';
+  alert.setAttribute('role', 'alert');
+  alert.setAttribute('aria-live', 'assertive');
+  alert.textContent = message;
+  return alert;
+}
+
 function clearAlert() {
   app.querySelectorAll('.form-alert').forEach((alert) => {
     alert.closest('.radio-response')?.classList.remove('has-error');
     alert.remove();
+  });
+  app.querySelectorAll('.inline-validation-alert').forEach((alert) => alert.remove());
+  app.querySelectorAll('mms-radio-group[data-response-name]').forEach((group) => {
+    group.error = false;
+    group.errorText = '';
   });
 }
 

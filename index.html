@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="uss-oh-dvs">
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -21,7 +21,17 @@
       <footer class="app-footer">
         <button class="primary-button" id="primary-button" type="button">Next</button>
       </footer>
-    </main>
-      <script src="app.js?v=20261022-error-reference-style"></script>
+    <html lang="en" data-theme="uss-oh-dvs">
+      <script type="module">
+        if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
+            // The proprietary design-system bundle is available only in the local workspace preview.
+          await import('../node_modules/@mms/design-system/dist/standalone.js');
+          document.documentElement.setAttribute('data-theme', 'uss-oh-dvs');
+          document.documentElement.style.setProperty('--color-primary-9', '#004C75');
+          document.documentElement.style.setProperty('--color-primary-10', '#003957');
+          document.documentElement.style.setProperty('--color-primary-2', '#e8f3f8');
+        }
+          await import('./app.js?v=20261023-design-system-radio-errors');
+      </script>
   </body>
 </html>
