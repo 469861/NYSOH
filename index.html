@@ -1,37 +1,61 @@
 <!doctype html>
-<html lang="en" data-theme="uss-oh-dvs">
+<html lang="en">
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="theme-color" content="#004C75">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <title>Work requirements</title>
-    <link rel="stylesheet" href="styles.css?v=20261023-mms-design-system">
+    <title>NY State of Health | Work requirements</title>
+    <style>
+      :root {
+        color: #1a1a1a;
+        background: #f4f4f4;
+        font-family: Avenir, "Avenir Next", Helvetica, Arial, sans-serif;
+        font-synthesis: none;
+      }
+
+      * { box-sizing: border-box; }
+      body { min-width: 320px; min-height: 100dvh; margin: 0; background: #f4f4f4; }
+      .home-shell { display: flex; flex-direction: column; width: 100%; min-height: 100dvh; margin: 0 auto; background: #fff; }
+      .home-header { padding: max(20px, env(safe-area-inset-top)) 24px 24px; color: #fff; background: #004c75; }
+      .brand { margin: 0; font-size: 15px; font-weight: 700; letter-spacing: .04em; }
+      .home-content { width: 100%; max-width: 600px; margin: 0 auto; padding: 32px 20px; }
+      h1 { margin: 0; color: #004c75; font-size: 28px; line-height: 1.2; }
+      .intro { margin: 12px 0 28px; color: #5c5c5c; font-size: 16px; line-height: 1.5; }
+      .prototype-list { display: grid; gap: 16px; }
+      .prototype-link { display: flex; flex-direction: column; gap: 8px; min-height: 128px; padding: 20px; border: 1px solid #b8b8b8; border-radius: 8px; color: inherit; background: #fff; text-decoration: none; }
+      .prototype-link:focus-visible { outline: 3px solid #386cf7; outline-offset: 3px; }
+      .prototype-link:hover { border-color: #004c75; }
+      .prototype-title { color: #004c75; font-size: 18px; font-weight: 700; }
+      .prototype-description { color: #5c5c5c; font-size: 14px; line-height: 1.45; }
+      .open-link { align-self: flex-start; margin-top: auto; color: #004c75; font-size: 15px; font-weight: 700; }
+      .home-footer { margin-top: auto; padding: 16px 20px max(16px, env(safe-area-inset-bottom)); color: #5c5c5c; font-size: 12px; text-align: center; }
+      @media (min-width: 640px) {
+        .home-shell { max-width: 480px; min-height: min(900px, 100dvh); box-shadow: 0 0 24px rgb(0 0 0 / 8%); }
+      }
+    </style>
   </head>
   <body>
-    <main class="app-shell">
-      <header class="app-header">
-        <button class="nav-button" id="header-back" type="button" aria-label="Back"><span class="nav-chevron" aria-hidden="true">&#8249;</span></button>
-        <span class="header-title">Work requirements</span>
-        <button class="close-button" id="header-close" type="button" aria-label="Close">&times;</button>
+    <main class="home-shell">
+      <header class="home-header">
+        <p class="brand">NY STATE OF HEALTH</p>
       </header>
-      <section class="content" id="app" aria-live="polite"></section>
-
-      <footer class="app-footer">
-        <button class="primary-button" id="primary-button" type="button">Next</button>
-      </footer>
+      <section class="home-content" aria-labelledby="page-title">
+        <h1 id="page-title">Work requirements</h1>
+        <p class="intro">Choose a prototype to begin the work requirements experience.</p>
+        <nav class="prototype-list" aria-label="Available prototypes">
+          <a class="prototype-link" href="prototype-a/index.html">
+            <span class="prototype-title">Prototype A - multiselect</span>
+            <span class="prototype-description">Explore the baseline experience with impacted-month selection.</span>
+            <span class="open-link">Open prototype <span aria-hidden="true">›</span></span>
+          </a>
+          <a class="prototype-link" href="prototype-b/index.html">
+            <span class="prototype-title">Prototype B - Single select</span>
+            <span class="prototype-description">Explore the experience with follow-up questions for December 2026.</span>
+            <span class="open-link">Open prototype <span aria-hidden="true">›</span></span>
+          </a>
+        </nav>
+      </section>
+      <footer class="home-footer">Prototype demonstration</footer>
     </main>
-    <script type="module">
-      if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
-        // The proprietary design-system bundle is available only in the local workspace preview.
-        await import('../node_modules/@mms/design-system/dist/standalone.js');
-        document.documentElement.setAttribute('data-theme', 'uss-oh-dvs');
-        document.documentElement.style.setProperty('--color-primary-9', '#004C75');
-        document.documentElement.style.setProperty('--color-primary-10', '#003957');
-        document.documentElement.style.setProperty('--color-primary-2', '#e8f3f8');
-      }
-      await import('./app.js?v=20261023-design-system-radio-inline-alert');
-    </script>
   </body>
 </html>

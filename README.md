@@ -8,6 +8,11 @@ Serve this directory with any static web server and open `index.html`.
 
 ## Demo
 
-The intended public demo URL is <https://469861.github.io/NYSOH/>. GitHub Pages deploys automatically after each push to `main`.
+The public prototype home is <https://469861.github.io/NYSOH/>.
+
+- **Prototype A - multiselect:** <https://469861.github.io/NYSOH/prototype-a/>
+- **Prototype B - Single select:** <https://469861.github.io/NYSOH/prototype-b/>
+
+GitHub Pages deploys automatically after each push to `main`.
 
 The document upload experience is a prototype only. Selecting a file does not transmit it to or store it on a server.
